@@ -6,6 +6,7 @@
 
 setwd("~/Documentos/Neylson Crepalde/Doutorado/sea_populacoes/migracoes")
 source("monta_rede_migracoes_2010.R")
+source("multiplot.R")
 
 #########
 # Se precisar do latlon para plotagem...
@@ -14,6 +15,7 @@ source("monta_rede_migracoes_2010.R")
 
 library(igraph)
 library(texreg)
+library(ggplot2)
 
 # Montando a rede de migrações para 2010
 g.2010 = graph_from_edgelist(as.matrix(rede.2010[,1:2]))
@@ -34,7 +36,7 @@ plot(g.2010, vertex.size=3, vertex.label.cex=.7, edge.arrow.size=.3,
 plot(g.2010, vertex.size=3, vertex.label.cex=.7, edge.arrow.size=.3, 
      #edge.width=log(E(g.2010)$weight), 
      edge.color=adjustcolor("grey70", .4),
-     layout=layout_in_circle, main="Rede de fluxos migratórios - 2010")
+     layout=layout_with_fr, main="Rede de fluxos migratórios - 2010")
 
 ###########################################################################
 #### Métricas a nível de rede
@@ -52,6 +54,12 @@ outdegree = degree(g.2010, mode='out')
 inter = betweenness(g.2010)
 constraint = constraint(g.2010)
 
+g1 = ggplot(NULL, aes(indegree))+geom_histogram()+labs(title='Grau de entrada',x='',y='')
+g2 = ggplot(NULL, aes(outdegree))+geom_histogram()+labs(title='Grau de saída',x='',y='')
+g3 = ggplot(NULL, aes(inter))+geom_histogram()+labs(title='Centralidade Betweeness',x='',y='')
+g4 = ggplot(NULL, aes(constraint))+geom_histogram()+labs(title='Constraint',x='',y='')
+
+multiplot(g1, g3, g2, g4, cols=2)
 ### Descritiva quanto aos processos
 triades = triad_census(g.2010)
 
@@ -82,13 +90,20 @@ mean_distance(brasil)  # Distância média
 ##########################################################################
 #### Métricas a nível do invidíduo
 
-indegree = degree(brasil, mode='in')
-outdegree = degree(brasil, mode='out')
-inter = betweenness(brasil)
-constraint = constraint(brasil)
+br.indegree = degree(brasil, mode='in')
+br.outdegree = degree(brasil, mode='out')
+br.inter = betweenness(brasil)
+br.constraint = constraint(brasil)
+
+g5 = ggplot(NULL, aes(br.indegree))+geom_histogram(bins=15)+labs(title='BR - Grau de entrada',x='',y='')
+g6 = ggplot(NULL, aes(br.outdegree))+geom_histogram(bins=15)+labs(title='BR - Grau de saída',x='',y='')
+g7 = ggplot(NULL, aes(br.inter))+geom_histogram(bins=15)+labs(title='BR - Centralidade Betweeness',x='',y='')
+g8 = ggplot(NULL, aes(br.constraint))+geom_histogram(bins=15)+labs(title='BR - Constraint',x='',y='')
+
+multiplot(g5, g7, g6, g8, cols=2)
 
 ### Descritiva quanto aos processos
-triades = triad_census(brasil)
+br.triades = triad_census(brasil)
 
 
 
