@@ -8,7 +8,7 @@ library(readr)
 library(magrittr)
 library(dplyr)
 
-bd <- read_csv2("~/Documentos/Neylson Crepalde/Doutorado/sea_populacoes/Seminario Big Data/migration_residence.csv",
+bd <- read_csv2("~/Documentos/Neylson Crepalde/Doutorado/sea_populacoes/migracoes/migration_residence.csv",
                 na = "..")
 
 #Transforma 0 em NA
