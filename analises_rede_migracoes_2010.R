@@ -39,8 +39,35 @@ plot(g.2010, vertex.size=3, vertex.label.cex=.7, edge.arrow.size=.3,
 ###########################################################################
 #### Métricas a nível de rede
 
-# Densidade
-graph.density(g.2010)
+graph.density(g.2010)  # Densidade
+diameter(g.2010)       # Diâmetro
+mean_distance(g.2010)  # Distância média
+
+
+##########################################################################
+#### Métricas a nível do invidíduo
+
+indegree = degree(g.2010, mode='in')
+outdegree = degree(g.2010, mode='out')
+inter = betweenness(g.2010)
+constraint = constraint(g.2010)
+
+### Descritiva quanto aos processos
+triades = triad_census(g.2010)
+
+
+
+#########################################################################
+###################  Rede Egocentrada do Brasil  ########################
+#########################################################################
+
+brasil = make_ego_graph(g.2010, order = 1, nodes = 'Brazil')
+brasil = brasil[[1]]
+
+plot(brasil, vertex.size=5, vertex.label.cex=.9, edge.arrow.size=.3, 
+     #edge.width=log(E(g.2010)$weight), 
+     edge.color=adjustcolor("grey70", .4),
+     main="Rede de fluxos migratórios do Brasil - 2010")
 
 
 
